@@ -6,22 +6,12 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 
-const SignUp = () => {
-  const [name, setName] = useState('');
+const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmitLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const data = {
-      name,
-      email,
-      password,
-      confirmPassword,
-    };
-    console.log(data);
   };
   return (
     <div className="flex flex-col w-full bg-gray-50 border max-w-xl rounded-md p-6 justify-center items-center">
@@ -31,32 +21,22 @@ const SignUp = () => {
         </h1>
 
         <p className="text-gray-500 flex text-base">
-          Efetue o cadastro para poder postar tudo o que quiser!
+          Efetue o login para acessar a nossa rede social!
         </p>
       </div>
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmitLogin}
         className="w-full p-4 px-6 text-gray-950 flex flex-col gap-2"
       >
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="name">Nome:</Label>
-          <Input
-            type="text"
-            name="name"
-            placeholder="Digite o seu nome"
-            className="w-full"
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
         <div className="flex flex-col gap-1">
           <Label htmlFor="email">E-mail:</Label>
           <Input
             type="email"
             name="email"
             placeholder="Digite o seu e-mail"
-            className="w-full i
-            nvalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:border-2 focus:invalid:outline-pink-500"
+            className="w-full
+            invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:border-2 focus:invalid:outline-pink-500"
             autoComplete="username"
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -72,19 +52,8 @@ const SignUp = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className="flex flex-col gap-1">
-          <Label htmlFor="confirmPassword">Confirmar Senha:</Label>
-          <Input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirme a sua senha"
-            className="w-full"
-            autoComplete="new-password"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </div>
         <Button
-          className="text-gray-50 mt-6 bg-gray-950 font-bold text-xl cursor-pointer h-12 
+          className="text-gray-50 mt-6 bg-gray-950 font-bold text-xl cursor-pointer h-12 font-roboto font-semibold
           hover:bg-sky-500 hover:text-gray-50"
           type="submit"
         >
@@ -92,16 +61,16 @@ const SignUp = () => {
         </Button>
       </form>
       <div className="flex mt-4 justify-end w-full px-6 gap-2">
-        <span>Já possui uma conta?</span>
+        <span>Não possui uma conta ainda?</span>
         <Link
-          href={'/login'}
-          className="text-sky-500 opacity-90 hover:opacity-100 cursor-pointer"
+          href={'/register'}
+          className="text-blue-500 opacity-90 hover:opacity-100 cursor-pointer"
         >
-          Faça o login
+          Cadastre-se
         </Link>
       </div>
     </div>
   );
 };
 
-export default SignUp;
+export default SignIn;
