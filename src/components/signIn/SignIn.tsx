@@ -17,7 +17,7 @@ const SignIn = () => {
     <div className="flex flex-col w-full bg-gray-50 border max-w-xl rounded-md p-6 justify-center items-center">
       <div className="w-full flex items-center flex-col gap-6 text-center">
         <h1 className="text-3xl font-bold mt-2 text-gray-950">
-          Primeiro Cadastro
+          Efetue o Login
         </h1>
 
         <p className="text-gray-500 flex text-base">
