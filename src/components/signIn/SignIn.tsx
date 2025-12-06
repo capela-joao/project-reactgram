@@ -1,14 +1,24 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
+import { LoginData } from '@/types/UserTypes';
+import { loginUserSchema } from '@/Schemas/login';
 
 const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<LoginData>({
+    resolver: zodResolver(loginUserSchema),
+    mode: 'onChange',
+  });
 
   const handleSubmitLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,28 +43,37 @@ const SignIn = () => {
           <Label htmlFor="email">E-mail:</Label>
           <Input
             type="email"
-            name="email"
+            {...register('email')}
             placeholder="Digite o seu e-mail"
             className="w-full
             invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:border-2 focus:invalid:outline-pink-500"
             autoComplete="username"
-            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
+        {errors.email && (
+          <p className="text-xs text-pink-500">{errors.email.message}</p>
+        )}
         <div className="flex flex-col gap-1">
           <Label htmlFor="password">Senha:</Label>
           <Input
             type="password"
-            name="password"
+            {...register('password')}
             placeholder="Digite a sua senha"
             className="w-full"
             autoComplete="new-password"
-            onChange={(e) => setPassword(e.target.value)}
           />
+          {errors.password && (
+            <p className="text-xs text-pink-500">{errors.password.message}</p>
+          )}
         </div>
         <Button
-          className="text-gray-50 mt-6 bg-gray-950 font-bold text-xl cursor-pointer h-12 font-roboto font-semibold
-          hover:bg-sky-500 hover:text-gray-50"
+          disabled={!isValid}
+          className={`text-gray-50 mt-6 font-bold text-xl h-12 
+          cursor-pointer ${
+            !isValid
+              ? 'opacity-50 cursor-not-allowed'
+              : 'bg-gray-950 hover:bg-sky-500'
+          }`}
           type="submit"
         >
           Cadastrar
