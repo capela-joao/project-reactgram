@@ -1,5 +1,5 @@
 import React from 'react';
-import SignIn from '@/components/signIn/SignIn';
+import SignIn from '@/components/auth/SignIn';
 const Login = () => {
   return (
     <div className="flex w-full justify-center items-center mt-6">

@@ -18,12 +18,18 @@ const Navbar = () => {
       </div>
       <div className="flex gap-4 px-6 items-center">
         <Link href="/login">
-          <Button variant="ghost" className="cursor-pointer text-lg font-bold">
+          <Button
+            variant="ghost"
+            className="cursor-pointer text-base font-semibold"
+          >
             Login
           </Button>
         </Link>
         <Link href="/register">
-          <Button variant="ghost" className="cursor-pointer text-lg font-bold">
+          <Button
+            variant="ghost"
+            className="cursor-pointer text-base font-semibold"
+          >
             Register
           </Button>
         </Link>

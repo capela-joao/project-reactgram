@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
@@ -20,8 +19,8 @@ const SignIn = () => {
     mode: 'onChange',
   });
 
-  const handleSubmitLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmitLogin = async (data: LoginData) => {
+    console.log(data);
   };
   return (
     <div className="flex flex-col w-full bg-gray-50 border max-w-xl rounded-md p-6 justify-center items-center">
@@ -36,7 +35,7 @@ const SignIn = () => {
       </div>
 
       <form
-        onSubmit={handleSubmitLogin}
+        onSubmit={handleSubmit(handleSubmitLogin)}
         className="w-full p-4 px-6 text-gray-950 flex flex-col gap-2"
       >
         <div className="flex flex-col gap-1">
