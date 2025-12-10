@@ -7,5 +7,5 @@ export default function PrivateLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div>{children}</div>;
+  return <ReduxProvider>{children}</ReduxProvider>;
 }
