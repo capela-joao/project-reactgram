@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { ReduxProvider } from '@/providers/redux-provider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="font-roboto">
-      <body className={`bg-gray-800`}>{children}</body>
+      <ReduxProvider>
+        <body className={`bg-gray-800`}>{children}</body>
+      </ReduxProvider>
     </html>
   );
 }

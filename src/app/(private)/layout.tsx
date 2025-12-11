@@ -1,11 +1,9 @@
 'use client';
 
-import { ReduxProvider } from '@/providers/redux-provider';
-
 export default function PrivateLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <ReduxProvider>{children}</ReduxProvider>;
+  return <div>{children}</div>;
 }

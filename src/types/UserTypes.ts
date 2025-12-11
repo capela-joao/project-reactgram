@@ -9,3 +9,12 @@ export interface LoginData {
   email: string;
   password: string;
 }
+
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  profileImage?: string;
+  bio?: string;
+  createdAt: string;
+}
