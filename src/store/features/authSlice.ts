@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { authService } from '@/lib/services/authService';
 import { RegisterData } from '@/types/UserTypes';
+import { ApiSuccess, ApiError } from '@/types/ApiTypes';
 
 interface AuthState {
   user: null;
@@ -17,20 +18,24 @@ const initialState: AuthState = {
 };
 
 export const register = createAsyncThunk<
-  void,
+  ApiSuccess,
   RegisterData,
-  { rejectValue: string }
+  { rejectValue: ApiError }
 >('auth/register', async (userData, thunkAPI) => {
   try {
-    const res = await authService.register(userData);
-
-    if (!res || res.errors) {
-      return thunkAPI.rejectWithValue(res?.errors?.[0] || 'Erro ao registrar');
+    const data = await authService.register(userData);
+    return data;
+  } catch (err) {
+    if (
+      typeof err === 'object' &&
+      err !== null &&
+      'errors' in err &&
+      Array.isArray((err as ApiError).errors)
+    ) {
+      return thunkAPI.rejectWithValue(err as ApiError);
     }
 
-    return;
-  } catch {
-    return thunkAPI.rejectWithValue('Erro na requisição.');
+    return thunkAPI.rejectWithValue({ errors: ['Erro inesperado'] });
   }
 });
 
@@ -57,7 +62,11 @@ export const authSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ?? 'Erro inesperado.';
+        if (action.payload) {
+          state.error = action.payload.errors[0] ?? 'Erro desconhecido';
+        } else {
+          state.error = 'Erro desconhecido';
+        }
       });
   },
 });

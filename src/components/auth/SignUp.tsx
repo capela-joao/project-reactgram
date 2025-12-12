@@ -8,6 +8,9 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { RegisterData } from '@/types/UserTypes';
 import { registerUserSchema } from '@/Schemas/register';
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { register as registerThunk, reset } from '@/store/features/authSlice';
+import Message from './message';
 
 const SignUp = () => {
   const {
@@ -19,8 +22,11 @@ const SignUp = () => {
     mode: 'onChange',
   });
 
+  const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector((state) => state.auth);
+
   const onSubmit = async (data: RegisterData) => {
-    console.log(data);
+    dispatch(registerThunk(data));
   };
 
   return (
@@ -93,19 +99,37 @@ const SignUp = () => {
             </p>
           )}
         </div>
-        <Button
-          disabled={!isValid}
-          className={`text-gray-50 mt-6 font-bold text-xl h-12 
+        {!loading && (
+          <Button
+            disabled={!isValid}
+            className={`text-gray-50 mt-6 font-bold text-xl h-12 
           cursor-pointer ${
             !isValid
               ? 'opacity-50 cursor-not-allowed'
               : 'bg-gray-950 hover:bg-sky-500'
           }`}
-          type="submit"
-        >
-          Cadastrar
-        </Button>
+            type="submit"
+          >
+            Cadastrar
+          </Button>
+        )}
+        {loading && (
+          <Button
+            disabled={isValid}
+            className={`text-gray-50 mt-6 font-bold text-xl h-12 
+          cursor-pointer ${
+            isValid
+              ? 'opacity-50 cursor-not-allowed'
+              : 'bg-gray-950 hover:bg-sky-500'
+          }`}
+            type="submit"
+          >
+            Aguarde...
+          </Button>
+        )}
+        {error && <Message msg={error} type="error" />}
       </form>
+      {}
       <div className="flex mt-4 justify-end w-full px-6 gap-2">
         <span>Já possui uma conta?</span>
         <Link
