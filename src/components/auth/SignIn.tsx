@@ -1,13 +1,21 @@
 'use client';
 
+import Link from 'next/link';
+import Message from './message';
+
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { LoginData } from '@/types/UserTypes';
 import { loginUserSchema } from '@/Schemas/login';
+
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { login as loginThunk, reset } from '@/store/features/authSlice';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const SignIn = () => {
   const {
@@ -19,9 +27,25 @@ const SignIn = () => {
     mode: 'onChange',
   });
 
+  const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector((state) => state.auth);
+  const router = useRouter();
+
   const handleSubmitLogin = async (data: LoginData) => {
-    console.log(data);
+    try {
+      dispatch(loginThunk(data)).unwrap();
+
+      router.push('/dashboard');
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(reset());
+    };
+  }, [dispatch]);
   return (
     <div className="flex flex-col w-full bg-gray-50 border max-w-xl rounded-md p-6 justify-center items-center">
       <div className="w-full flex items-center flex-col gap-6 text-center">
@@ -65,18 +89,35 @@ const SignIn = () => {
             <p className="text-xs text-pink-500">{errors.password.message}</p>
           )}
         </div>
-        <Button
-          disabled={!isValid}
-          className={`text-gray-50 mt-6 font-bold text-xl h-12 
+        {!loading && (
+          <Button
+            disabled={!isValid}
+            className={`text-gray-50 mt-6 font-bold text-xl h-12 
           cursor-pointer ${
             !isValid
               ? 'opacity-50 cursor-not-allowed'
               : 'bg-gray-950 hover:bg-sky-500'
           }`}
-          type="submit"
-        >
-          Cadastrar
-        </Button>
+            type="submit"
+          >
+            Login
+          </Button>
+        )}
+        {loading && (
+          <Button
+            disabled={isValid}
+            className={`text-gray-50 mt-6 font-bold text-xl h-12 
+          cursor-pointer ${
+            isValid
+              ? 'opacity-50 cursor-not-allowed'
+              : 'bg-gray-950 hover:bg-sky-500'
+          }`}
+            type="submit"
+          >
+            Aguarde...
+          </Button>
+        )}
+        {error && <Message msg={error} type="error" />}
       </form>
       <div className="flex mt-4 justify-end w-full px-6 gap-2">
         <span>Não possui uma conta ainda?</span>

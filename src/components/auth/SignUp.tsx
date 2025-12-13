@@ -1,16 +1,21 @@
 'use client';
 
+import Link from 'next/link';
+import Message from './message';
+
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { RegisterData } from '@/types/UserTypes';
 import { registerUserSchema } from '@/Schemas/register';
+import { RegisterData } from '@/types/UserTypes';
+
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { register as registerThunk, reset } from '@/store/features/authSlice';
-import Message from './message';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const SignUp = () => {
   const {
@@ -24,10 +29,23 @@ const SignUp = () => {
 
   const dispatch = useAppDispatch();
   const { loading, error } = useAppSelector((state) => state.auth);
+  const router = useRouter();
 
   const onSubmit = async (data: RegisterData) => {
-    dispatch(registerThunk(data));
+    try {
+      dispatch(registerThunk(data)).unwrap();
+
+      router.push('/login');
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(reset());
+    };
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col w-full bg-gray-50 border max-w-xl rounded-md p-6 justify-center items-center">

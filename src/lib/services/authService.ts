@@ -1,9 +1,13 @@
-import { RegisterData } from '@/types/UserTypes';
+import { LoginData, RegisterData, User } from '@/types/UserTypes';
 import { api, requestConfig } from '../api';
-import { ApiSuccess, ApiError } from '@/types/ApiTypes';
+import {
+  ApiSuccessRegister,
+  ApiError,
+  ApiSuccessLogin,
+} from '@/types/ApiTypes';
 
 export const authService = {
-  register: async (data: RegisterData): Promise<ApiSuccess> => {
+  register: async (data: RegisterData): Promise<ApiSuccessRegister> => {
     const config = requestConfig('POST', data);
 
     try {
@@ -17,7 +21,49 @@ export const authService = {
         throw error;
       }
 
-      return json as ApiSuccess;
+      return json as ApiSuccessRegister;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
+
+  login: async (data: LoginData): Promise<ApiSuccessLogin> => {
+    const config = requestConfig('POST', data);
+
+    try {
+      const res = await fetch(api + '/users/login', config);
+      const json = await res.json().catch(() => {});
+
+      if (!res.ok) {
+        const error: ApiError = {
+          errors: json.errors ?? ['Erro desconhecido.'],
+        };
+        throw error;
+      }
+
+      return json as ApiSuccessLogin;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
+
+  getProfile: async (): Promise<User> => {
+    const config = requestConfig('GET');
+
+    try {
+      const res = await fetch(api + '/users/profile', config);
+      const json = await res.json().catch(() => {});
+
+      if (!res.ok) {
+        const error: ApiError = {
+          errors: json.errors ?? ['Erro desconhecido.'],
+        };
+        throw error;
+      }
+
+      return json as User;
     } catch (err) {
       console.log(err);
       throw err;
