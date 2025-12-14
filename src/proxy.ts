@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse, type ProxyConfig } from 'next/server';
 
 const publicRoutes = [
+  { path: '/', whenAuthenticated: 'redirect' },
   { path: '/login', whenAuthenticated: 'redirect' },
   { path: '/register', whenAuthenticated: 'redirect' },
 ] as const;
