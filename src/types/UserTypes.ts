@@ -1,5 +1,7 @@
 export interface RegisterData {
-  name: string;
+  firstName: string;
+  lastName: string;
+  username: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -12,7 +14,9 @@ export interface LoginData {
 
 export interface User {
   _id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
+  username: string;
   email: string;
   profileImage?: string;
   bio?: string;

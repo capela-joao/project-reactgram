@@ -33,7 +33,7 @@ const SignUp = () => {
 
   const onSubmit = async (data: RegisterData) => {
     try {
-      dispatch(registerThunk(data)).unwrap();
+      await dispatch(registerThunk(data)).unwrap();
 
       router.push('/login');
     } catch (err) {
@@ -63,16 +63,44 @@ const SignUp = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full p-4 px-6 text-gray-950 flex flex-col gap-2"
       >
+        <div className="flex w-full gap-1">
+          <div className="flex flex-col gap-1 w-full">
+            <Label htmlFor="firstName">Nome:</Label>
+            <Input
+              type="text"
+              {...register('firstName')}
+              placeholder="Digite o seu nome"
+              className="w-full"
+            />
+            {errors.firstName && (
+              <p className="text-xs text-pink-500">
+                {errors.firstName.message}
+              </p>
+            )}
+          </div>
+          <div className="flex flex-col gap-1 w-full">
+            <Label htmlFor="lastName">Sobrenome:</Label>
+            <Input
+              type="text"
+              {...register('lastName')}
+              placeholder="Digite o seu sobrenome"
+              className="w-full"
+            />
+            {errors.lastName && (
+              <p className="text-xs text-pink-500">{errors.lastName.message}</p>
+            )}
+          </div>
+        </div>
         <div className="flex flex-col gap-1">
-          <Label htmlFor="name">Nome:</Label>
+          <Label htmlFor="username">Usuário:</Label>
           <Input
             type="text"
-            {...register('name')}
-            placeholder="Digite o seu nome"
+            {...register('username')}
+            placeholder="Digite o seu usuário"
             className="w-full"
           />
-          {errors.name && (
-            <p className="text-xs text-pink-500">{errors.name.message}</p>
+          {errors.username && (
+            <p className="text-xs text-pink-500">{errors.username.message}</p>
           )}
         </div>
         <div className="flex flex-col gap-1">

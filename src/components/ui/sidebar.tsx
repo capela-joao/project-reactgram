@@ -1,10 +1,23 @@
-'use cliente';
+'use client';
 
 import React from 'react';
-import { House, Search, User, Cog } from 'lucide-react';
+import { House, Search, User, Cog, Plus } from 'lucide-react';
 import { Button } from './button';
 
+import { getProfile } from '@/store/features/authSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useEffect } from 'react';
+
 const Sidebar = () => {
+  const { user, loading } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!user && !loading) {
+      dispatch(getProfile());
+    }
+  }, [user, loading, dispatch]);
+
   return (
     <aside className="h-screen flex flex-col p-4 pt-8 w-72 border-r border-gray-800 text-gray-50">
       <div className="mb-10">
@@ -25,12 +38,30 @@ const Sidebar = () => {
           <Search />
           Pesquisa
         </a>
+        {!user && (
+          <a
+            href="/dashboard"
+            className="block flex gap-2 py-3 px-2 rounded-md hover:bg-gray-50 hover:text-gray-950"
+          >
+            <User />
+            Profile
+          </a>
+        )}
+        {user && (
+          <a
+            href="/profile"
+            className="block flex gap-2 py-3 px-2 rounded-md hover:bg-gray-50 hover:text-gray-950"
+          >
+            <User />
+            <span>{user.username}</span>
+          </a>
+        )}
         <a
           href="/dashboard"
           className="block flex gap-2 py-3 px-2 rounded-md hover:bg-gray-50 hover:text-gray-950"
         >
-          <User />
-          Profile
+          <Plus />
+          New Post
         </a>
         <a
           href="/dashboard"
