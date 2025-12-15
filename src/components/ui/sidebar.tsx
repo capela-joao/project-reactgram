@@ -8,7 +8,14 @@ import { getProfile } from '@/store/features/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useEffect } from 'react';
 
-const Sidebar = () => {
+import { API_URL } from '@/config/env';
+
+interface SidebarProps {
+  onLogout?: () => void;
+  onNewPost?: () => void;
+}
+
+const Sidebar = ({ onLogout, onNewPost }: SidebarProps) => {
   const { user, loading } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
@@ -38,6 +45,20 @@ const Sidebar = () => {
           <Search />
           Pesquisa
         </a>
+        <button
+          onClick={onNewPost}
+          className="block bg-transparent flex gap-2 py-3 px-2 cursor-pointer rounded-md hover:bg-gray-50 hover:text-gray-950"
+        >
+          <Plus />
+          <span>New Post</span>
+        </button>
+        <a
+          href="/dashboard"
+          className="block flex gap-2 py-3 px-2 rounded-md hover:bg-gray-50 hover:text-gray-950"
+        >
+          <Cog />
+          Settings
+        </a>
         {!user && (
           <a
             href="/dashboard"
@@ -50,26 +71,16 @@ const Sidebar = () => {
         {user && (
           <a
             href="/profile"
-            className="block flex gap-2 py-3 px-2 rounded-md hover:bg-gray-50 hover:text-gray-950"
+            className="block flex gap-2 py-3 px-2 rounded-md hover:bg-gray-50 hover:text-gray-950 flex items-center"
           >
-            <User />
+            <img
+              src={`${API_URL}/uploads/users/${user.profileImage}`}
+              alt={user.username}
+              className="w-10 h-10 rounded-full object-cover"
+            />
             <span>{user.username}</span>
           </a>
         )}
-        <a
-          href="/dashboard"
-          className="block flex gap-2 py-3 px-2 rounded-md hover:bg-gray-50 hover:text-gray-950"
-        >
-          <Plus />
-          New Post
-        </a>
-        <a
-          href="/dashboard"
-          className="block flex gap-2 py-3 px-2 rounded-md hover:bg-gray-50 hover:text-gray-950"
-        >
-          <Cog />
-          Settings
-        </a>
       </div>
       <div className="mb-10">
         <Button
