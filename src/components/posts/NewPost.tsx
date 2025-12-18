@@ -73,10 +73,10 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="w-[60vw] h-[80vh] p-0 overflow-hidden bg-gray-800 
-                  text-gray-50 p-0 m-0 rounded-lg border border-gray-700
+                  text-gray-50 p-0 m-0 rounded-xl border border-gray-700
                   flex flex-col"
       >
-        <DialogHeader className="flex flex-row items-center justify-between bg-gray-950 p-3 border-b border-gray-700">
+        <DialogHeader className="flex flex-row items-center justify-between bg-gray-950 p-3 border-b border-gray-600">
           {step === 'details' ? (
             <button
               type="button"
@@ -211,7 +211,6 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
                     className="flex items-center gap-2 text-gray-400 hover:text-white text-sm cursor-pointer"
                   >
                     <Smile size={20} />
-                    Emojis
                   </button>
 
                   <span
@@ -231,7 +230,9 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
                   <div className="relative mt-2">
                     <EmojiPicker
                       theme={Theme.DARK}
-                      className="absolute w-full"
+                      className="absolute w-full max-w-64 max-h-80"
+                      searchDisabled
+                      previewConfig={{ showPreview: false }}
                       onEmojiClick={(emojiData: EmojiClickData) => {
                         setTitle((prev) => prev + emojiData.emoji);
                       }}

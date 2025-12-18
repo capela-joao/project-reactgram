@@ -33,7 +33,7 @@ const SignIn = () => {
 
   const handleSubmitLogin = async (data: LoginData) => {
     try {
-      dispatch(loginThunk(data)).unwrap();
+      await dispatch(loginThunk(data)).unwrap();
 
       router.push('/dashboard');
     } catch (err) {

@@ -69,4 +69,15 @@ export const authService = {
       throw err;
     }
   },
+
+  logout: async (): Promise<void> => {
+    const config = requestConfig('POST');
+
+    try {
+      await fetch(api + '/users/logout', config);
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
 };

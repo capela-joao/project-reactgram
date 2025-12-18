@@ -43,7 +43,7 @@ const Sidebar = ({ onLogout, onNewPost }: SidebarProps) => {
           className="block flex gap-2 py-3 px-2 rounded-md hover:bg-gray-50 hover:text-gray-950"
         >
           <Search />
-          Pesquisa
+          Search
         </a>
         <button
           onClick={onNewPost}
@@ -76,7 +76,7 @@ const Sidebar = ({ onLogout, onNewPost }: SidebarProps) => {
             <img
               src={`${API_URL}/uploads/users/${user.profileImage}`}
               alt={user.username}
-              className="w-10 h-10 rounded-full object-cover"
+              className="w-6 h-6 rounded-full object-cover"
             />
             <span>{user.username}</span>
           </a>
@@ -84,6 +84,7 @@ const Sidebar = ({ onLogout, onNewPost }: SidebarProps) => {
       </div>
       <div className="mb-10">
         <Button
+          onClick={onLogout}
           variant={'destructive'}
           className="w-full block cursor-pointer h-12 font-semibold text-lg"
         >

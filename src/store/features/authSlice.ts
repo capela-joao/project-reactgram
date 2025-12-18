@@ -90,6 +90,10 @@ export const getProfile = createAsyncThunk<
   }
 });
 
+export const Logout = createAsyncThunk('auth/logout', async () => {
+  await authService.logout();
+});
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,

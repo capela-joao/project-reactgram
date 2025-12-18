@@ -14,6 +14,7 @@ const Navbar = () => {
           type="text"
           placeholder="Pesquise..."
           className="max-w-xl border-none text-lg"
+          hidden
         />
       </div>
       <div className="flex gap-4 px-6 items-center">
