@@ -1,14 +1,23 @@
 export const api = 'http://localhost:5001/api';
 export const uploads = 'http://localhost:5001/uploads';
 
-export const requestConfig = <T extends object>(
-  method: string,
-  data?: T,
-  isFormData?: boolean
-) => {
+export interface requestConfigOptions<T> {
+  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  data?: T;
+  isFormData?: boolean;
+  cache?: RequestCache;
+}
+
+export const requestConfig = <T = unknown>({
+  method,
+  data,
+  isFormData,
+  cache,
+}: requestConfigOptions<T>) => {
   const config: RequestInit = {
     method,
     credentials: 'include',
+    cache,
   };
 
   if (isFormData && data instanceof FormData) {

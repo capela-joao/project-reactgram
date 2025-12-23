@@ -4,6 +4,15 @@ import { useRef, useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { getProfile } from '@/store/features/authSlice';
 import { API_URL } from '@/config/env';
+import { useForm, useWatch } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { newPostSchema } from '@/Schemas/posts';
+import { NewPostData } from '@/types/PostsTypes';
+import { createPost, resetPostSate } from '@/store/features/postSlice';
+import { useRouter } from 'next/navigation';
+
+import Message from '../auth/message';
+
 import {
   Dialog,
   DialogContent,
@@ -28,16 +37,29 @@ interface Preview {
 type Step = 'select' | 'details';
 
 const NewPost = ({ open, onOpenChange }: newPostProps) => {
+  const { register, handleSubmit, setValue, watch, control } = useForm({
+    resolver: zodResolver(newPostSchema),
+    mode: 'onChange',
+  });
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<Preview | null>(null);
   const [step, setStep] = useState<Step>('select');
-  const [title, setTitle] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const { user } = useAppSelector((state) => state.auth);
+  const { loading, error } = useAppSelector((state) => state.post);
   const dispatch = useAppDispatch();
 
+  const router = useRouter();
+
   const max_chars = 2200;
+
+  const titleValue = useWatch({
+    control,
+    name: 'title',
+    defaultValue: '',
+  });
 
   function handleSelectFile() {
     fileInputRef.current?.click();
@@ -50,12 +72,13 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
       return;
     }
 
+    setValue('image', file, { shouldValidate: true });
+
     const type = file.type.startsWith('image') ? 'image' : 'video';
 
     const url = URL.createObjectURL(file);
     setPreview({ file, type, url });
   };
-
   useEffect(() => {
     if (!user) {
       dispatch(getProfile());
@@ -68,6 +91,22 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
       }
     };
   }, [preview, user, dispatch]);
+
+  const onSubmit = async (data: NewPostData) => {
+    try {
+      await dispatch(createPost(data)).unwrap();
+
+      router.push('/dashboard');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetPostSate());
+    };
+  }, [dispatch]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -103,7 +142,8 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
             </button>
           ) : step === 'details' ? (
             <button
-              type="button"
+              type="submit"
+              form="new-post-form"
               className="text-sm font-medium text-blue-500 hover:text-blue-400 cursor-pointer"
             >
               Share
@@ -112,7 +152,11 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
             <div />
           )}
         </DialogHeader>
-        <form className="flex flex-1 flex-col overflow-hidden">
+        <form
+          id="new-post-form"
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-1 flex-col overflow-hidden"
+        >
           <Input
             ref={fileInputRef}
             accept="image/*,video/*"
@@ -200,9 +244,8 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
                 <textarea
                   className="w-full h-32 rounded-md bg-transparent font-medium
                              focus:outline-none focus:border-blue-500 text-gray-50 resize-none"
-                  value={title}
                   maxLength={max_chars}
-                  onChange={(e) => setTitle(e.target.value)}
+                  {...register('title')}
                 />
                 <div className="flex items-center justify-between">
                   <button
@@ -215,14 +258,14 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
 
                   <span
                     className={`flex justify-end text-xs ${
-                      title.length >= max_chars
+                      titleValue.length >= max_chars
                         ? 'text-red-500'
-                        : title.length > max_chars * 0.9
+                        : titleValue.length > max_chars * 0.9
                         ? 'text-yellow-400'
                         : 'text-gray-400'
                     }`}
                   >
-                    {title.length} / {max_chars}
+                    {titleValue.length} / {max_chars}
                   </span>
                 </div>
                 {/* Picker Emoji */}
@@ -234,7 +277,9 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
                       searchDisabled
                       previewConfig={{ showPreview: false }}
                       onEmojiClick={(emojiData: EmojiClickData) => {
-                        setTitle((prev) => prev + emojiData.emoji);
+                        setValue('title', titleValue + emojiData.emoji, {
+                          shouldValidate: true,
+                        });
                       }}
                     />
                   </div>
@@ -242,6 +287,7 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
               </div>
             </div>
           )}
+          {error && <Message msg={error} type="error" />}
         </form>
       </DialogContent>
     </Dialog>

@@ -8,7 +8,11 @@ import {
 
 export const authService = {
   register: async (data: RegisterData): Promise<ApiSuccessRegister> => {
-    const config = requestConfig('POST', data);
+    const config = requestConfig({
+      method: 'POST',
+      data: data,
+      cache: 'no-store',
+    });
 
     try {
       const res = await fetch(api + '/users/register', config);
@@ -29,7 +33,11 @@ export const authService = {
   },
 
   login: async (data: LoginData): Promise<ApiSuccessLogin> => {
-    const config = requestConfig('POST', data);
+    const config = requestConfig({
+      method: 'POST',
+      data: data,
+      cache: 'no-store',
+    });
 
     try {
       const res = await fetch(api + '/users/login', config);
@@ -50,7 +58,10 @@ export const authService = {
   },
 
   getProfile: async (): Promise<User> => {
-    const config = requestConfig('GET');
+    const config = requestConfig({
+      method: 'GET',
+      cache: 'no-store',
+    });
 
     try {
       const res = await fetch(api + '/users/profile', config);
@@ -71,7 +82,9 @@ export const authService = {
   },
 
   logout: async (): Promise<void> => {
-    const config = requestConfig('POST');
+    const config = requestConfig({
+      method: 'POST',
+    });
 
     try {
       await fetch(api + '/users/logout', config);
