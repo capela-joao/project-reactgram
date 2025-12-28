@@ -17,7 +17,7 @@ const PostCard = ({ posts }: PostCardProps) => {
               <img
                 src={`${process.env.NEXT_PUBLIC_UPLOADS_URL}/users/${post.user.profileImage}`}
                 alt={post.user.username}
-                className="w-12 h-12 rounded-full"
+                className="w-8 h-8 rounded-full"
               />
               <h2 className="font-semibold">{post.user.username}</h2>
               <span className="text-gray-500">•</span>
