@@ -96,6 +96,7 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
     try {
       await dispatch(createPost(data)).unwrap();
 
+      onOpenChange(false);
       router.push('/dashboard');
     } catch (err) {
       console.log(err);

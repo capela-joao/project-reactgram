@@ -16,6 +16,7 @@ export const postService = {
     const config = requestConfig({
       method: 'POST',
       data: formData,
+      isFormData: true,
       cache: 'no-store',
     });
 
@@ -35,18 +36,5 @@ export const postService = {
       console.log(err);
       throw err;
     }
-  },
-
-  getPosts: async (): Promise<Post[]> => {
-    const config = requestConfig({ method: 'GET', cache: 'no-store' });
-
-    const res = await fetch(api + '/photos/', config);
-    const json = await res.json();
-
-    if (!res.ok) {
-      throw new Error(json?.errors?.[0] ?? 'Erro ao carregar posts');
-    }
-
-    return json as Post[];
   },
 };
