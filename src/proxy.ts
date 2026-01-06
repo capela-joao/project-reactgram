@@ -14,13 +14,6 @@ export function proxy(request: NextRequest) {
   const publicRoute = publicRoutes.find((route) => route.path === path);
   const authToken = request.cookies.get('token')?.value;
 
-  console.log('🔍 Middleware rodou:', {
-    path,
-    hasToken: !!authToken,
-    tokenValue: authToken ? 'presente' : 'ausente',
-    allCookies: request.cookies.getAll(),
-  });
-
   if (!authToken && publicRoute) return NextResponse.next();
 
   if (!authToken && !publicRoute) {
