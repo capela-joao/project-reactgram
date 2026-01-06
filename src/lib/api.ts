@@ -1,5 +1,4 @@
-export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API ?? 'http://localhost:5001';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API;
 export const api = `${API_BASE_URL}/api`;
 export const uploads = `${API_BASE_URL}/uploads`;
 
