@@ -6,7 +6,7 @@ import DashboardProfile from '@/components/User/dashboardProfile';
 
 import { Post } from '@/types/PostsTypes';
 import { User } from '@/types/UserTypes';
-import { API_URL } from '@/config/env';
+import { API_BASE_URL } from '@/lib/api';
 
 const Dashboard = async () => {
   const cookie = await cookies();
@@ -17,14 +17,14 @@ const Dashboard = async () => {
   }
 
   const [postRes, profileRes] = await Promise.all([
-    fetch(`${API_URL}/api/photos/`, {
+    fetch(`${API_BASE_URL}/api/photos/`, {
       headers: {
         Cookie: `token=${token}`,
       },
       credentials: 'include',
       cache: 'no-store',
     }),
-    fetch(`${API_URL}/api/users/profile`, {
+    fetch(`${API_BASE_URL}/api/users/profile`, {
       headers: {
         Cookie: `token=${token}`,
       },
