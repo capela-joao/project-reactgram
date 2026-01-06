@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { getProfile } from '@/store/features/authSlice';
-import { API_URL } from '@/config/env';
+import { API_UPLOADS_URL } from '@/config/env';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { newPostSchema } from '@/Schemas/posts';
@@ -83,8 +83,6 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
     if (!user) {
       dispatch(getProfile());
     }
-
-    console.log(process.env.NEXT_PUBLIC_API_URL);
     return () => {
       if (preview?.url) {
         URL.revokeObjectURL(preview.url);
@@ -235,7 +233,7 @@ const NewPost = ({ open, onOpenChange }: newPostProps) => {
                   )}
                   {user?.profileImage && (
                     <img
-                      src={`${API_URL}/uploads/users/${user.profileImage}`}
+                      src={`${API_UPLOADS_URL}/users/${user.profileImage}`}
                       alt={user.username}
                       className="w-8 h-8 rounded-full object-cover"
                     />

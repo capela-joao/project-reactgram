@@ -52,8 +52,6 @@ export const login = createAsyncThunk<
   try {
     const data = await authService.login(userData);
 
-    await thunkAPI.dispatch(getProfile());
-
     return data;
   } catch (err) {
     if (

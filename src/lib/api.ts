@@ -1,5 +1,7 @@
-export const api = 'http://localhost:5001/api';
-export const uploads = 'http://localhost:5001/uploads';
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API ?? 'http://localhost:5001';
+export const api = `${API_BASE_URL}/api`;
+export const uploads = `${API_BASE_URL}/uploads`;
 
 export interface requestConfigOptions<T> {
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
