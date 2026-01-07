@@ -33,6 +33,8 @@ const Dashboard = async () => {
     }),
   ]);
 
+  console.log(profileRes);
+
   if (!postRes.ok || !profileRes.ok) {
     return <p className="text-gray-50">Erro ao carregar posts!</p>;
   }

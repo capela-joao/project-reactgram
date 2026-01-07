@@ -10,7 +10,7 @@ const DashboardProfile = ({ profile }: dashboardProfileProps) => {
     <div>
       <div className="flex gap-2 items-center">
         <img
-          src={`${process.env.NEXT_PUBLIC_UPLOADS_URL}/users/${profile.profileImage}`}
+          src={`${process.env.NEXT_PUBLIC_API_UPLOADS_URL}/users/${profile.profileImage}`}
           alt={profile.username}
           className="w-12 h-12 rounded-full"
         />
