@@ -74,7 +74,7 @@ const Sidebar = ({ onLogout, onNewPost }: SidebarProps) => {
             className="block flex gap-2 py-3 px-2 rounded-md hover:bg-gray-50 hover:text-gray-950 flex items-center"
           >
             <img
-              src={`${API_URL}/uploads/users/${user.profileImage}`}
+              src={user.profileImage}
               alt={user.username}
               className="w-6 h-6 rounded-full object-cover"
             />

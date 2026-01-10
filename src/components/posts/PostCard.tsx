@@ -1,7 +1,6 @@
 'use client';
 import { Post } from '@/types/PostsTypes';
 import { Heart, MessageCircle } from 'lucide-react';
-import { API_UPLOADS_URL } from '@/config/env';
 import TimeAgo from '../ux/timeago';
 
 interface PostCardProps {
@@ -16,7 +15,7 @@ const PostCard = ({ posts }: PostCardProps) => {
           <div key={post._id} className="w-full aspect-square mb-4">
             <div className="flex gap-2 items-center py-4">
               <img
-                src={`${API_UPLOADS_URL}/users/${post.user.profileImage}`}
+                src={post.user.profileImage}
                 alt={post.user.username}
                 className="w-8 h-8 rounded-full"
               />
@@ -25,7 +24,7 @@ const PostCard = ({ posts }: PostCardProps) => {
               <TimeAgo date={post.createdAt} />
             </div>
             <img
-              src={`${API_UPLOADS_URL}/photos/${post.image}`}
+              src={post.image}
               alt={post.title}
               className="w-full h-full object-cover  overflow-hidden rounded-md"
             />
