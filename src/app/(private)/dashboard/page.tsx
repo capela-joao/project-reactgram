@@ -2,8 +2,7 @@ import { Suspense } from 'react';
 import { cookies } from 'next/headers';
 
 import PostCard from '@/components/posts/PostCard';
-import DashboardProfile from '@/components/User/dashboardProfile';
-
+import DashboardProfile from '@/components/User/DashboardProfile';
 import { Post } from '@/types/PostsTypes';
 import { User } from '@/types/UserTypes';
 import { API_BASE_URL } from '@/lib/api';

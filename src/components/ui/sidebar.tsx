@@ -8,8 +8,6 @@ import { getProfile } from '@/store/features/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useEffect } from 'react';
 
-import { API_URL } from '@/config/env';
-
 interface SidebarProps {
   onLogout?: () => void;
   onNewPost?: () => void;
@@ -78,7 +76,7 @@ const Sidebar = ({ onLogout, onNewPost }: SidebarProps) => {
               alt={user.username}
               className="w-6 h-6 rounded-full object-cover"
             />
-            <span>{user.username}</span>
+            <span>Perfil</span>
           </a>
         )}
       </div>
