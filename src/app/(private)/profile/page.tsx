@@ -1,21 +1,32 @@
-'use client';
 import React from 'react';
-import { useAppSelector, useAppDispatch } from '@/store/hooks';
-import { getProfile } from '@/store/features/authSlice';
-import { useEffect } from 'react';
+import { cookies } from 'next/headers';
+import { User } from '@/types/UserTypes';
+import { API_BASE_URL } from '@/lib/api';
+import ProfileHeader from '@/components/User/ProfileHeader';
 
-const Profile = () => {
-  const { user, loading } = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
+const Profile = async () => {
+  const cookie = await cookies();
+  const token = cookie.get('token')?.value;
 
-  useEffect(() => {
-    if (!user && !loading) {
-      dispatch(getProfile());
-    }
-  }, [user, loading, dispatch]);
+  if (!token) {
+    return <p className="text-gray-50">Não autenticado!</p>;
+  }
+
+  const profileRes = await fetch(`${API_BASE_URL}/api/users/profile`, {
+    headers: {
+      Cookie: `token=${token}`,
+    },
+    credentials: 'include',
+    cache: 'no-store',
+  });
+
+  const profile: User = await profileRes.json();
+
   return (
-    <div className="flex justify-center w-full items-center">
-      <h1 className="font-bold text-3xl text-gray-50">Olá, {user?.username}</h1>
+    <div className="flex flex-col items-center w-full">
+      {/*Profile Header*/}
+      <ProfileHeader profile={profile} />
+      {/*Profile Posts*/}
     </div>
   );
 };
