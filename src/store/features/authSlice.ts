@@ -1,12 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { authService } from '@/lib/services/authService';
-import { LoginData, RegisterData } from '@/types/UserTypes';
+import {
+  LoginData,
+  RegisterData,
+  updateUserData,
+  User,
+} from '@/types/UserTypes';
 import {
   ApiSuccessRegister,
   ApiSuccessLogin,
   ApiError,
 } from '@/types/ApiTypes';
-import { User } from '@/types/UserTypes';
 
 interface AuthState {
   user: User | null;
@@ -64,6 +68,29 @@ export const login = createAsyncThunk<
     }
 
     return thunkAPI.rejectWithValue({ errors: ['Erro inesperado'] });
+  }
+});
+
+export const updateUser = createAsyncThunk<
+  User,
+  updateUserData,
+  { rejectValue: ApiError }
+>('auth/updateUser', async (userData, thunkAPI) => {
+  try {
+    const data = await authService.updateUser(userData);
+    return data;
+  } catch (err) {
+    if (
+      typeof err === 'object' &&
+      err !== null &&
+      'errors' in err &&
+      Array.isArray((err as ApiError).errors)
+    ) {
+      return thunkAPI.rejectWithValue(err as ApiError);
+    }
+    return thunkAPI.rejectWithValue({
+      errors: ['Erro desconhecido ao atualizar perfil'],
+    });
   }
 });
 
@@ -155,6 +182,23 @@ export const authSlice = createSlice({
         state.loading = false;
         state.user = null;
         state.error = action.payload?.errors[0] ?? 'Erro desconhecido';
+      })
+
+      // updateUser
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = null;
+        state.user = action.payload;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.errors?.[0] || 'Erro ao atualizar perfil';
+        state.user = null;
       });
   },
 });

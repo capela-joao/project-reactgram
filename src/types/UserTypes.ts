@@ -22,3 +22,11 @@ export interface User {
   bio?: string;
   createdAt: string;
 }
+
+export interface updateUserData {
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+  bio?: string;
+  profileImage?: File;
+}
