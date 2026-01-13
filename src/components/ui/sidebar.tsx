@@ -24,7 +24,7 @@ const Sidebar = ({ onLogout, onNewPost }: SidebarProps) => {
   }, [user, loading, dispatch]);
 
   return (
-    <aside className="h-screen flex flex-col p-4 pt-8 w-72 border-r border-gray-800 text-gray-50">
+    <aside className="h-screen flex flex-col p-4 pt-8 w-72 text-gray-50">
       <div className="mb-10">
         <h1 className="text-3xl font-bold px-2">ReactGram</h1>
       </div>
