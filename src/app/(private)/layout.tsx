@@ -12,8 +12,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const handleLogout = () => {
-    dispatch(Logout());
+  const handleLogout = async () => {
+    await dispatch(Logout());
     router.push('/login');
   };
 
