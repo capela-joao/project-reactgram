@@ -29,6 +29,8 @@ O projeto tem como foco o estudo e aplicação de boas práticas em **front-end 
 - Autenticação de usuários
 - Criação de posts
 - Listagem de posts no dashboard
+- Página de perfil de usuário logado.
+- Edição de perfil de usuário logado.
 
 ---
 
